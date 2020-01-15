@@ -5,7 +5,7 @@ import os
 # 抓資料夾內圖片檔名
 for filename in os.listdir(r"./picture/input"):
     # 讀圖片
-    m1 = cv2.imread("picture/" + filename)
+    m1 = cv2.imread("picture/" + filename, 1)
     # 灰階
     m2 = cv2.cvtColor(m1, cv2.COLOR_BGR2GRAY)
     # 二階化
@@ -19,7 +19,7 @@ for filename in os.listdir(r"./picture/input"):
         # 取得輪廓點矩型
         x, y, w, h = cv2.boundingRect(c1[i])
         # 塞選過小的輪廓
-        if w > h and w > 900:
+        if w > h and w > 850:
             # 切圖
             m4 = m1[y:y + h, x:x + w]
             m5.append(m4)
