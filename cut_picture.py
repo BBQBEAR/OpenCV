@@ -1,11 +1,13 @@
+# pip-> numpy, opencv-python, opencv-contrib-python
+# 讀入圖放picture/input下面, 輸出picture/output
 import cv2
 import numpy as np
 import os
 # 讀入後灰階才可二階化 二階化後可取輪廓 再取胎心音圖及宮縮圖
 # 抓資料夾內圖片檔名
-for filename in os.listdir(r"./picture/input"):
-    # 讀圖片
-    m1 = cv2.imread("picture/" + filename, 1)
+for filename in os.listdir(r"./picture/input/"):
+    # 讀picture/input下的圖片
+    m1 = cv2.imread("picture/input/" + filename, 1)
     # 灰階
     m2 = cv2.cvtColor(m1, cv2.COLOR_BGR2GRAY)
     # 二階化
@@ -36,7 +38,7 @@ for filename in os.listdir(r"./picture/input"):
     m6[0:baby_h, 0:m6_x] = m5[1]
     m6[baby_h:baby_h + mon_h, 0:m6_x] = m5[0]
     try:
-        # 存檔
-        cv2.imwrite(f"picture/output/new_{filename}", m6, [cv2.IMWRITE_JPEG_QUALITY,100])
+        # 存檔 存在picture/output資料夾內
+        cv2.imwrite(f"picture/output/new_{filename}", m6, [cv2.IMWRITE_JPEG_QUALITY, 100])
     except :
         pass
