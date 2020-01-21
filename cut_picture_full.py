@@ -7,6 +7,7 @@ import os
 # 讀入後灰階才可二階化 二階化後可取輪廓 再取胎心音圖及宮縮圖
 # 抓資料夾內圖片檔名
 for filename in os.listdir(r"./picture/input/"):
+
     # 讀picture/input下的圖片
     m1 = cv2.imread("picture/input/" + filename, 1)
     # 灰階
@@ -17,12 +18,13 @@ for filename in os.listdir(r"./picture/input/"):
     c1, t1 = cv2.findContours(m3, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     # 暫存圖片用
     m5 = []
+    x0, y0, w0, h0 = cv2.boundingRect(c1[0])
     # [0]為圖片邊框 故從1開始
     for i in range(1, len(c1)):
         # 取得輪廓點矩型
         x, y, w, h = cv2.boundingRect(c1[i])
         # 塞選過小的輪廓
-        if w > h and w > 850:
+        if w > h and w > int(w0*0.8):
             # 取座標
             m5.append((x, y, w, h))
 
@@ -36,8 +38,3 @@ for filename in os.listdir(r"./picture/input/"):
         cv2.imwrite(f"picture/output/full_{filename}", m6, [cv2.IMWRITE_JPEG_QUALITY, 100])
     except:
         pass
-
-# cv2.imshow("m1", m1)
-# cv2.imshow("m6", m6)
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
