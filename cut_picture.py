@@ -17,11 +17,11 @@ for filename in os.listdir(r"./picture/input/"):
     # 暫存圖片用
     m5 = []
     x0, y0, w0, h0 = cv2.boundingRect(c1[0])
-    # [0]為圖片邊框 故從1開始
+    # c1[0]為圖片邊框 故從1開始
     for i in range(1, len(c1)):
         # 取得輪廓點矩型
         x, y, w, h = cv2.boundingRect(c1[i])
-        # 塞選過小的輪廓
+        # 篩選過小的輪廓
         if w > h and w > int(w0*0.8):
             # 切圖
             m4 = m1[y:y + h, x:x + w]
