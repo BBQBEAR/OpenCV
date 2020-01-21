@@ -16,12 +16,13 @@ for filename in os.listdir(r"./picture/input/"):
     c1, t1 = cv2.findContours(m3, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     # 暫存圖片用
     m5 = []
+    x0, y0, w0, h0 = cv2.boundingRect(c1[0])
     # [0]為圖片邊框 故從1開始
     for i in range(1, len(c1)):
         # 取得輪廓點矩型
         x, y, w, h = cv2.boundingRect(c1[i])
         # 塞選過小的輪廓
-        if w > h and w > 850:
+        if w > h and w > int(w0*0.8):
             # 切圖
             m4 = m1[y:y + h, x:x + w]
             m5.append(m4)
