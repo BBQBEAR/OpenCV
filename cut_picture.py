@@ -3,9 +3,11 @@
 import cv2
 import numpy as np
 import os
+
 # 讀入後灰階才可二階化 二階化後可取輪廓 再取胎心音圖及宮縮圖
 # 抓資料夾內圖片檔名
-for filename in os.listdir(r"./picture/input/"):
+for k, filename in enumerate(os.listdir(r"./picture/input/")):
+
     # 讀picture/input下的圖片
     m1 = cv2.imread("picture/input/" + filename, 1)
     # 灰階
@@ -23,23 +25,16 @@ for filename in os.listdir(r"./picture/input/"):
         x, y, w, h = cv2.boundingRect(c1[i])
         # 篩選過小的輪廓
         if w > h and w > int(w0*0.8):
-            # 切圖
-            m4 = m1[y:y + h, x:x + w]
-            m5.append(m4)
-    # 寬度微調 讓寬度一樣(以胎音為主)
-    m5[0] = cv2.resize(m5[0], (m5[1].shape[1], m5[0].shape[0]))
-    # 取2張圖的高
-    baby_h = m5[1].shape[0]
-    mon_h = m5[0].shape[0]
-    # 取2張圖大小 製作空白底圖
-    m6_y = baby_h + mon_h
-    m6_x = m5[0].shape[1]
-    m6 = np.full((m6_y, m6_x, 3), (255, 255, 255), np.uint8)
-    # 貼胎音/宮縮
-    m6[0:baby_h, 0:m6_x] = m5[1]
-    m6[baby_h:baby_h + mon_h, 0:m6_x] = m5[0]
+            # 取2張圖的座標
+            m5.append((x, y, w, h))
+
+    baby = m5[1]
+    mon = m5[0]
+    m6_h = mon[1] - baby[1] + mon[3]
+    m6_w = baby[2]
+    m6 = m1[baby[1]:baby[1] + m6_h, baby[0]:baby[0] + m6_w]
     try:
         # 存檔 存在picture/output資料夾內
-        cv2.imwrite(f"picture/output/new_{filename}", m6, [cv2.IMWRITE_JPEG_QUALITY, 100])
-    except :
+        cv2.imwrite(f"picture/output/one_{k}.jpg", m6, [cv2.IMWRITE_JPEG_QUALITY, 100])
+    except:
         pass
